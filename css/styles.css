@@ -90,11 +90,11 @@ button {
 	position: relative;
 }
 	#roster-sidebar, #stats-sidebar, #restart-sidebar {
-		width: 150px;
+		width: 15em;
 		padding: 20px;
 		margin: 0;
 		background-color: #EEEEEE;
-		position: absolute;
+		display: inline-block;
 		top: 4.5em;
 		-webkit-border-radius: 5px;
 		-moz-border-radius: 5px;
@@ -254,14 +254,6 @@ button {
 	font-weight: bold;
 }
 
-@media(max-width: 1300px) {
-	.container {
-		width: 440px;
-	}
-	.grid-container:last-child {
-		margin-left: 0;
-	}
-}
 
 
 @-webkit-keyframes highlight {

@@ -26,7 +26,7 @@ function nebRead(method, args, listener)
                 console.log("Error: " + error);
             }
 
-            listener(result, error);
+            listener(result, error, args);
         }
     });
 }

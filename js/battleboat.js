@@ -1,6 +1,5 @@
 var mainGame;
 var CONST = {};
-var last_shot;
 
 (function() {
 // Battleboat
@@ -136,7 +135,6 @@ Game.prototype.shootListener = function(e) {
 		// already clicked on yet
 		//self.robot.shoot();
 
-		last_shot = {x: y, y: x};
 		shootAt(x, y);
 	} else {
 		Game.gameOver = false;
@@ -179,6 +177,7 @@ Game.prototype.placementListener = function(e) {
 				var el = document.getElementById('rotate-button');
 				el.addEventListener(transitionEndEventName(),(function(){
 					el.setAttribute('class', 'hidden');
+					document.getElementById('private-game').removeAttribute('class');	
 					document.getElementById('start-game').removeAttribute('class');	
 				}),false);
 				el.setAttribute('class', 'invisible');
@@ -318,6 +317,7 @@ Game.prototype.resetRosterSidebar = function() {
 
 	document.getElementById('roster-sidebar').removeAttribute('class');
 	document.getElementById('rotate-button').removeAttribute('class');
+	document.getElementById('private-game').setAttribute('class', 'hidden');
 	document.getElementById('start-game').setAttribute('class', 'hidden');
 };
 Game.prototype.showRestartSidebar = function() {
@@ -423,8 +423,15 @@ Grid.prototype.init = function() {
 
 // Updates the cell's CSS class based on the type passed in
 Grid.prototype.updateCell = function(x, y, type, targetPlayer) {
+	if(this.cells[x][y] == CONST.TYPE_SUNK) 
+	{
+		return;
+	}
 	var player;
 	if (targetPlayer === CONST.HUMAN_PLAYER) {
+		if(type == 'pending') {
+			throw new Error();
+		}
 		player = 'human-player';
 	} else if (targetPlayer === CONST.COMPUTER_PLAYER) {
 		player = 'computer-player';
@@ -891,19 +898,35 @@ function getRandom(min, max) {
 	return Math.random() * (max - min) + min;
 }
 
-on_opponent_shot.sub(function() 
+function getIsHit(x, y) 
 {
-	var is_hit = board_cells[target_y][target_x] == CONST.TYPE_EMPTY ? 0 : 1;	
-	mainGame.humanGrid.updateCell(target_y, target_x, is_hit ? 'hit' : 'miss', CONST.HUMAN_PLAYER);
-	if(is_hit) 
+	switch(board_cells[y][x]) 
+	{
+		case CONST.TYPE_EMPTY:
+			return 0;
+		case CONST.TYPE_HIT:
+			return 1;
+		case CONST.TYPE_MISS:
+			return 0;
+		case CONST.TYPE_SHIP:
+			return 1;
+		case CONST.CSS_TYPE_SUNK:
+			return 1;
+	}
+}
+
+on_opponent_shot.sub(function(target_x, target_y) 
+{
+	var is_hit = getIsHit(target_x, target_y);	
+	if(mainGame.humanGrid.cells[target_y][target_x] == CONST.TYPE_SHIP) 
 	{
 		mainGame.humanFleet.findShipByCoords(target_y, target_x).incrementDamage(); // increase the damage
+		if(mainGame.humanFleet.allShipsSunk()) 
+		{ // You just lost.
+			gameOverILost();
+		}
 	}
-
-	if(mainGame.humanFleet.allShipsSunk()) 
-	{ // You just lost.
-		concedeGame();
-	}
+	mainGame.humanGrid.updateCell(target_y, target_x, is_hit ? 'hit' : 'miss', CONST.HUMAN_PLAYER);
 });
 
 on_start.sub(function() 
@@ -914,16 +937,51 @@ on_start.sub(function()
 
 on_opponent_connected.sub(function() 
 {
-	document.getElementById("enemy_board").classList.remove('invisible');	
+	document.getElementById("enemy_board").classList.remove('invisible');
+
+	repaint();
 });
 
 on_my_turn.sub(function()
 {
 	document.getElementById("enemy_board").classList.remove('no-pointer');	
 
-	if(last_shot_is_hit !== undefined) 
+	repaint();
+});
+
+on_my_turn_over.sub(function()
+{
+	document.getElementById("enemy_board").classList.add('no-pointer');	
+});
+
+
+document.getElementById("enemy_board").classList.add('invisible');
+document.getElementById("enemy_board").classList.add('no-pointer');
+
+function repaint() 
+{
+	if(targeted_cells) 
 	{
-		mainGame.computerGrid.updateCell(last_shot.y, last_shot.x, last_shot_is_hit ? 'hit' : 'miss', CONST.COMPUTER_PLAYER);
+		for(var i = 0; i < targeted_cells.length; i++)
+		{
+			var cell = targeted_cells[i];
+			
+			if(i % 2 != is_my_turn ? targeted_cells.length % 2 : Math.abs(targeted_cells.length % 2 - 1))
+			{
+				on_opponent_shot.fire(cell.x, cell.y);
+			}
+			else 
+			{
+				if(i == targeted_cells.length - 1) 
+				{
+					mainGame.computerGrid.updateCell(cell.y, cell.x, 'pending', CONST.COMPUTER_PLAYER);	
+				} 
+				else 
+				{
+					mainGame.computerGrid.updateCell(cell.y, cell.x, cell.is_hit ? 'hit' : 'miss', CONST.COMPUTER_PLAYER);
+				}
+			}
+		}
 	}
 
 	if(revealed_ships)
@@ -949,13 +1007,4 @@ on_my_turn.sub(function()
 			}
 		}
 	}
-});
-
-on_my_turn_over.sub(function()
-{
-	document.getElementById("enemy_board").classList.add('no-pointer');	
-});
-
-
-document.getElementById("enemy_board").classList.add('invisible');
-document.getElementById("enemy_board").classList.add('no-pointer');
+}

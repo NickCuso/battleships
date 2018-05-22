@@ -32,3 +32,28 @@
 .grid {
     padding: 0;
 }
+#private-game
+{
+    white-space: nowrap;
+}
+#game-container
+{
+    width:100%;
+}
+#game-control-panel
+{
+    display: none;
+}
+#secret 
+{
+    margin-top: 1em; 
+    height: 8em;
+}
+.private-info 
+{
+    -webkit-text-security: disc;
+}
+#game-available
+{
+    display: none;
+}
