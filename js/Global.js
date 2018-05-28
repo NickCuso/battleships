@@ -55,7 +55,7 @@ var board_seeds;
 function redirectToGame()
 {
     var href = window.location.href;
-    var dir = href.substring(0, href.lastIndexOf('/')) + "/Game.html";
+    var dir = href.substring(0, href.lastIndexOf('/')) + "/game.html";
     window.location =  dir;  
 }
 
