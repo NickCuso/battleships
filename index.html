@@ -1,82 +1,76 @@
 <!doctype html>
 <html>
-<head>
+<head>    
     <meta charset=utf-8>
     <title>Uncheatable Battleships, powered by Nebulas</title>
-    
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css" media="all">
     <link rel="stylesheet" href="css/Battleships.css">
-
+    
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-    <script src="js/Global.js"></script>
-    <script src="js/nebPay.js"></script>
-    <script src="js/sha256.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        
     <script src="js/Observable.js"></script>
+    <script src="js/Global.js"></script>
+    <script src="js/nebulas.js"></script>
+    <script src="js/nebPay.js"></script>
     <script src="js/HardlyNeb.js"></script>
     <script src="js/Template.js" defer="true"></script> 
-    
-    <script src="js/Battleships.js" defer="true"></script> 
-    <script src="js/battleboat.js" defer="true"></script>
-    <script src="js/GameFrontEnd.js" defer="true"></script>
-    <script src="js/GameControlPanel.js" defer="true"></script>
-    <script src="js/RequireNAS.js" defer="true"></script>
-
 </head>
 <body>
 
     <div id="header"></div>
  
     <div class="container">
-        <div class="game-container">
-            <div id="roster-sidebar">
-                <h2>Place Your Ships</h2>
-                <ul class="fleet-roster">
-                    <li id="destroyer">Destroyer</li>
-                    <li id="submarine">Submarine</li>
-                    <li id="cruiser">Cruiser</li>
-                    <li id="battleship">Battleship</li>
-                    <li id="carrier">Aircraft Carrier</li>
-                </ul>
-                <button id="rotate-button" data-direction="0">Rotate Ship</button>
-                <div id="private-game" class="hidden">
-                    <input id="private-game-checkbox" type="checkbox"></input> 
-                    <label for="private-game-checkbox">Private Game</label>
-                </div> 
-                <button id="start-game" class="hidden">Start Game</button>
-                <div>
-                    <textarea id="secret" class="private-info"></textarea>
-                    <br>
-                    <input id="show-secret" type="checkbox" onclick="$('#secret').toggleClass('private-info')"><label for="show-secret">Show Secret</label>
-                </div>
-            </div>
-            <div id="game-control-panel">
-                things and stuff.
-
-                <div id="is-timeout" style="display:none">
-                    Opponent Timeout!  <button onclick="collectWinFromTimout()">Claim The Win</button>
-                </div>
-            </div>
-            <div class="grid-container" style="margin-left:5em">
-                <h2>Your Fleet</h2>
-                <div class="grid human-player"><span class="no-js">Please enable JavaScript to play this game</span></div>
-            </div>
-            <div id="cancel-game">
-                <button onclick="cancelGame()">Cancel Game</button>
-            </div>
-            <div id="enemy_board" class="grid-container">
-                <h2>Enemy Fleet</h2>
-                <div class="grid computer-player"><span class="no-js">Please enable JavaScript to play this game</span></div>
-            </div>
-            <div id="concede-game">
-                <button onclick="gameOverILost()">Concede</button>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1 class="mt-5">Battleships Game</h1>
+                <p class="lead">You get a Shipcoin, and you get a Shipcoin!</p>
             </div>
         </div>
+        <div class="row justify-content-center mt-5">
+            <div class="card text-center">
+                <h4 class="card-title">Free Tokens!</h4>
+                <p>Free to play and the winner gets Shipcoins, these are actual NEP20 tokens that will be tradable on a $NAS DEX (once one is created).  There will only ever be 1,000,000 Shipcoins $SHC.  Playing is like participating in an airdrop or claiming tokens from a faucet, but way more fun.</p>
+                <ul>
+                    <li>Winner gets 100% of the 'Next Payout'.</li>
+                    <li>Losers get 1% of the 'Next Payout'.</li>
+                    <li>If you timeout, you get nothing and your opponent gets 10%.</li>
+                    <li>Cheaters will be forced to timeout.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="card text-center">
+                <h4 class="card-title">Uncheatable</h4>
+                <p>Cheaters will never win, either they lose the game or we detect the cheat and they lose the game.</p>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="card text-center">
+                <h4 class="card-title">Educational</h4>
+                <p>This is <a href="todo">open-source</a> and even includes a <a href="todo">whitepaper</a>.  Take a look to see how concepts presented here could be extended to other games.</p>
+            </div>
+        </div>
+        
+        <br><br>
+        
+        <div class="row text-center">
+            <div class="col-xl-6">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/ebHqns7sYdA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            <div class="col-xl-6">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/ebHqns7sYdA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+        
+        <div id="footer"></div>
+        
     </div>
 
-    <div id="footer"></div>
-
+    <script src="js/Header.js" defer="true"></script> 
+    
 </body>
 </html>

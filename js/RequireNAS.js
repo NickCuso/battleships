@@ -1,4 +1,4 @@
-$(document).ready(function() 
+$(window).on("load", function() 
 {
     //to check if the extension is installed
     //if the extension is installed, var "webExtensionWallet" will be injected in to web page

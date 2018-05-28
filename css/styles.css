@@ -1,44 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
-html, body {
-	width: 100%;
-	padding: 0;
-	margin: 0;
-	background-color: #ddd;
-	min-width: 860px;
-}
-h1, h2, h3, h4, h5, h6, p, li, span {
-	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-	color: #222222;
-}
-a {
-	color: #222222;
-	font-weight: bold;
-}
-	a:hover {
-		text-decoration: none;
-	}
-div {
-	padding: 0;
-	margin: 0;
-}
-
-button {
-	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-	font-size: 1.2em;
-	color: #EEEEEE;
-	background-color: #25567B;
-	border: none;
-	margin: 1em auto 0 auto;
-	padding: 10px;
-	border-radius: 5px;
-}
-	button:hover {
-		cursor: pointer;
-		background-color: #ffffff;
-	}
-	button:active {
-		background-color: #99C2E1;
-	}
 	#start-game,
 	#place-randomly,
 	#restart-game {
@@ -57,40 +16,11 @@ button {
 			background-color: #FFCE8E;
 		}
 
-#prefetch1 {
-	background: url('../img/cross-icon.svg');
-}
-#prefetch2 {
-	background: url('../img/cross-icon.png');
-}
-#prefetch3 {
-	background: url('../img/crosshair.png');
-}
-.prefetch {
-	background-repeat: no-repeat;
-	background-position: -9999px -9999px;
-}
-
-.tagline {
-	margin-bottom: 2em;
-}
-	.instructions {
-		width: auto;
-		display: inline-block;
-		text-align: left;
-		margin: 0 auto 3em auto;
-	}
-
-.container {
-	width: 870px;
-	text-align: center;
-	margin: 20px auto 100px auto;
-}
 .game-container {
 	position: relative;
 }
 	#roster-sidebar, #stats-sidebar, #restart-sidebar {
-		width: 15em;
+		width: 10em;
 		padding: 20px;
 		margin: 0;
 		background-color: #EEEEEE;
@@ -152,36 +82,13 @@ button {
 		display: none;
 	}
 
-.grid-container {
-	width: 430px;
-	display: inline-block;
-}
-.grid-container h2 {
-	width: 430px;
-	display: inline-block;
-}
-
-.grid {
-	position: relative;
-	vertical-align: top;
-	padding: 5px;
-	height: 420px;
-	width: 420px;
-	background-color: #25567B;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-}
-	.grid-container:last-child {
-		margin-left: 10px;
-	}
-	.no-js {
-		width: 300px;
-		height: 300px;
-		margin: 100px auto;
+	.grid-container {
+		width: 430px;
 		display: inline-block;
-		color: #EEEEEE;
-		font-size: 2em;
+	}
+	.grid-container h2 {
+		width: 430px;
+		display: inline-block;
 	}
 	.grid-cell {
 		vertical-align: top; /*clears the vertical space between rows*/

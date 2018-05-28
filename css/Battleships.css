@@ -1,13 +1,23 @@
+body {
+    padding-top: 54px;
+  }
+  @media (min-width: 992px) {
+    body {
+      padding-top: 56px;
+    }
+  }
+
+.tagline 
+{
+    font-size: .5em;
+}
+
 #content {
     width:85%;
     margin: 0 auto;
 }
 .input-group {
     margin-top:1em;
-}
-#footer {
-    padding-top: 4em;
-    padding-left: 1em;
 }
 #txhash {
     width:40em;    
@@ -47,13 +57,53 @@
 #secret 
 {
     margin-top: 1em; 
-    height: 8em;
+    height: 10em;
+    width: 100%;    
 }
 .private-info 
 {
     -webkit-text-security: disc;
 }
-#game-available
+.jumbotron
 {
-    display: none;
+    background-color: #bacbdc;
+    padding: 2rem 1rem;
+    margin-bottom: 0;
+}
+.shipcoins
+{
+    font-size: 2rem;
+}
+.status-bar
+{
+    background-color: #bacbdc;
+    border-radius: 0 0 .3rem .3rem;
+}
+.card
+{
+    background-color: #bacbdc;
+    max-width: 30em;
+    padding: .5em;
+}
+body 
+{
+    background-color: #f7fbff;
+}
+#game-message-box
+{
+    padding-bottom: 2em;
+    min-height: 7em;
+}
+#game-message-box .card
+{
+    background-color: #EEEEEE;
+}
+#transaction-log
+{
+    width: 80%;
+    height: 10rem;
+}
+#roster-sidebar
+{
+    margin-bottom: 1.5em;
 }

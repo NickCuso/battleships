@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>    
+    <meta charset=utf-8>
+    <title>Uncheatable Battleships, powered by Nebulas</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css" media="all">
+    <link rel="stylesheet" href="css/Battleships.css">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        
+    <script src="js/Observable.js"></script>
+    <script src="js/Global.js"></script>
+    <script src="js/nebulas.js"></script>
+    <script src="js/nebPay.js"></script>
+    <script src="js/HardlyNeb.js"></script>
+    <script src="js/Template.js" defer="true"></script> 
+
+    <script src="js/sha256.js"></script>
+    <script src="js/Battleships.js" defer="true"></script> 
+    <script src="js/RandomSecret.js" defer="true"></script> 
+    <script src="js/battleboat.js" defer="true"></script>
+    <script src="js/GameFrontEnd.js" defer="true"></script>
+    <script src="js/GameControlPanel.js" defer="true"></script>
+    <script src="js/RequireNAS.js" defer="true"></script>
+    <script src="js/Messaging.js" defer="true"></script>
+    <script src="js/TransactionLog.js" defer="true"></script>
+
+</head>
+<body>
+
+    <div id="header"></div>
+ 
+    <br>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-2 text-center" id="roster-sidebar-container">
+                <div id="roster-sidebar">
+                    <h4>Place Your Ships</h4>
+                    <ul class="fleet-roster mt-4">
+                        <li id="destroyer">Destroyer</li>
+                        <li id="submarine">Submarine</li>
+                        <li id="cruiser">Cruiser</li>
+                        <li id="battleship">Battleship</li>
+                        <li id="carrier">Aircraft Carrier</li>
+                    </ul>
+                    <button class="btn btn-secondary" id="rotate-button" data-direction="0">Rotate Ship</button>
+                    <button class="btn btn-primary hidden" id="start-game" class="hidden">Start Game</button>
+                    <br>
+                    <br>
+                    <div>
+                        <textarea id="secret" class="private-info"></textarea>
+                        <br>
+                        <input id="show-secret" type="checkbox" onclick="$('#secret').toggleClass('private-info')"><label for="show-secret">Show Secret</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="row justify-content-center" id="game-message-box">
+                    <div class="col card text-center">
+                        <div id="state-message-start">
+                            Place your ships.
+                        </div>
+                        <div id="state-message-layout-complete" class="hidden">
+                            Press Start and pay a tiny bit of gas to begin.
+                        </div>
+                        <div id="state-message-start-requested" class="hidden">
+                            Waiting for your transaction to start the game to be processed.  If it fails, you can submit again.
+                        </div>
+                        <div id="waiting-for-opponent" class="hidden">
+                            Waiting for opponent...
+                            <div class="row justify-content-center mt-3">
+                                <button id="cancel-game" class="btn btn-secondary" onclick="cancelGame()">Cancel Game</button>
+                            </div>
+                        </div>
+                        <div id="your-turn" class="hidden">
+                            Your turn - GO!
+                        </div>
+                        <div id="your-turn-over-pending" class="hidden">
+                            Waiting for your transaction to appear on the blockchain.  If needed, you can submit another.
+                        </div>
+                        <div id="opponent-turn" class="hidden">
+                            It's your opponent's turn, waiting...
+                        </div>
+                        <div id="shot-clock" class="hidden"></div>    
+                        <div id="shot-clock-expired-my-turn" class="hidden">Time's up, go now before your opponent claims the win.</div>
+                        <div id="is-timeout" class="hidden">
+                            Opponent Timeout!  
+                            <div class="row justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="collectWinFromTimout()">Claim The Win</button>
+                            </div>
+                            * This requires a higher gas limit.  Add a 0 to the default (for a limit of 2,000,000).
+                        </div>
+                        <div id="confirm-i-lost">
+                            You lost.  Post this to the blockchain and stick around for a few mins, if your opponent was cheating they will not be able to confirm the win and you can claim it after a Timeout.
+                            <div class="row justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="gameOverILost()">Confirm I Lost</button>
+                            </div>
+                        </div>
+                        <div id="on-concede" class="hidden">
+                            Stick around for a few mins, if your opponent was cheating they will not be able to confirm the win and you can claim it after a Timeout.
+                        </div>
+                        <div id="confirm-win">
+                            You won, now just submit proof that you were not cheating to redeem your prize.
+                            <div class="row justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="confirmWinner()">Confirm I Won</button>                        
+                            </div>
+                            * This requires a higher gas limit.  Add a 0 to the default (for a limit of 2,000,000).                
+                        </div>
+                        <div id="game-over-you-won">
+                            GG - You won!  
+                            <div class="row justify-content-center mt-3">
+                                <button class="btn btn-secondary" onclick="redirectToGame()">Start a New Game</button>                
+                            </div>
+                        </div>
+                        <div id="game-over-you-lose">
+                            You lost.  Better luck next time.
+                            <div class="row justify-content-center mt-3">
+                                <button class="btn btn-secondary" onclick="redirectToGame()">Start a New Game</button>                
+                            </div>
+                        </div>  
+                        <div id="resuming-game">
+                            <hr>
+                            You are resuming a game in progress.  This requires you lay out the board the same way and use the same secret, otherwise you will
+                            be disqualified for cheating. 
+                            <div class="row justify-content-center mt-3">
+                                <button class="btn btn-secondary" onclick="redirectToGame()">Start a New Game</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                <div class="col-xl-6 text-center">   
+                    <div class="grid-container text-center">
+                        <h2>Your Fleet</h2>
+                        <div class="grid human-player"><span class="no-js">Please enable JavaScript to play this game</span></div>
+                    </div>
+                </div>
+                <div class="col-xl-6 hidden  text-center" id="enemy-board-col">
+                    <div id="enemy_board" class="grid-container">
+                        <h2>Enemy Fleet</h2>
+                        <div class="grid computer-player"><span class="no-js">Please enable JavaScript to play this game</span></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+        </div>
+
+        <div class="row justify-content-center">
+            <div id="concede-game" class="hidden">
+                <br><br>
+                <button class="btn btn-secondary" onclick="gameOverILost()">Concede</button>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+                <div class="col">
+            <div class="row justify-content-center">
+                Transaction Log:
+            </div>
+            <div class="row justify-content-center">                    
+                <textarea id="transaction-log" spellcheck="false"></textarea>
+            </div>
+            </div>
+        </div>
+        
+        <div id="footer"></div>
+    </div>
+
+    <script src="js/Header.js" defer="true"></script> 
+</body>
+</html>

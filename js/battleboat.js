@@ -175,12 +175,9 @@ Game.prototype.placementListener = function(e) {
 			self.placingOnGrid = false;
 			if (self.areAllShipsPlaced()) {
 				var el = document.getElementById('rotate-button');
-				el.addEventListener(transitionEndEventName(),(function(){
-					el.setAttribute('class', 'hidden');
-					document.getElementById('private-game').removeAttribute('class');	
-					document.getElementById('start-game').removeAttribute('class');	
-				}),false);
-				el.setAttribute('class', 'invisible');
+				el.setAttribute('class', 'hidden');
+				document.getElementById('start-game').classList.remove('hidden');	
+				on_board_layout_complete.fire();
 			}
 		}
 	}
@@ -298,15 +295,21 @@ Game.prototype.areAllShipsPlaced = function() {
 	return true;
 };
 // Resets the fog of war
-Game.prototype.resetFogOfWar = function() {
+Game.prototype.resetFogOfWar = function(comp_only) {
 	for (var i = 0; i < Game.size; i++) {
 		for (var j = 0; j < Game.size; j++) {
-			this.humanGrid.updateCell(i, j, 'empty', CONST.HUMAN_PLAYER);
+			if(!comp_only)
+			{
+				this.humanGrid.updateCell(i, j, 'empty', CONST.HUMAN_PLAYER);
+			}
 			this.computerGrid.updateCell(i, j, 'empty', CONST.COMPUTER_PLAYER);
 		}
 	}
-	// Reset all values to indicate the ships are ready to be placed again
-	Game.usedShips = Game.usedShips.map(function(){return CONST.UNUSED;});
+	if(!comp_only)
+	{
+		// Reset all values to indicate the ships are ready to be placed again
+		Game.usedShips = Game.usedShips.map(function(){return CONST.UNUSED;});
+	}
 };
 // Resets CSS styling of the sidebar
 Game.prototype.resetRosterSidebar = function() {
@@ -314,11 +317,6 @@ Game.prototype.resetRosterSidebar = function() {
 	for (var i = 0; i < els.length; i++) {
 		els[i].removeAttribute('class');
 	}
-
-	document.getElementById('roster-sidebar').removeAttribute('class');
-	document.getElementById('rotate-button').removeAttribute('class');
-	document.getElementById('private-game').setAttribute('class', 'hidden');
-	document.getElementById('start-game').setAttribute('class', 'hidden');
 };
 Game.prototype.showRestartSidebar = function() {
 	var sidebar = document.getElementById('restart-sidebar');
@@ -923,7 +921,7 @@ on_opponent_shot.sub(function(target_x, target_y)
 		mainGame.humanFleet.findShipByCoords(target_y, target_x).incrementDamage(); // increase the damage
 		if(mainGame.humanFleet.allShipsSunk()) 
 		{ // You just lost.
-			gameOverILost();
+			on_i_appear_to_have_lost.fire();
 		}
 	}
 	mainGame.humanGrid.updateCell(target_y, target_x, is_hit ? 'hit' : 'miss', CONST.HUMAN_PLAYER);
@@ -932,7 +930,7 @@ on_opponent_shot.sub(function(target_x, target_y)
 on_start.sub(function() 
 {
 	var el = document.getElementById('roster-sidebar');
-	el.setAttribute('class', 'invisible'); 
+	el.setAttribute('class', 'hidden'); 
 });
 
 on_opponent_connected.sub(function() 
@@ -942,16 +940,23 @@ on_opponent_connected.sub(function()
 	repaint();
 });
 
-on_my_turn.sub(function()
+// on_my_turn.sub(function()
+// {
+	
+// });
+
+on_turn_change.sub(function()
 {
-	document.getElementById("enemy_board").classList.remove('no-pointer');	
+	if(is_my_turn)
+	{
+		document.getElementById("enemy_board").classList.remove('no-pointer');	
+	} 
+	else
+	{
+		document.getElementById("enemy_board").classList.add('no-pointer');	
+	}
 
 	repaint();
-});
-
-on_my_turn_over.sub(function()
-{
-	document.getElementById("enemy_board").classList.add('no-pointer');	
 });
 
 
@@ -960,6 +965,8 @@ document.getElementById("enemy_board").classList.add('no-pointer');
 
 function repaint() 
 {
+	mainGame.resetFogOfWar(true);
+
 	if(targeted_cells) 
 	{
 		for(var i = 0; i < targeted_cells.length; i++)

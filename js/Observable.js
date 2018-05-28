@@ -23,11 +23,11 @@ Observable.prototype =
         );
     },
  
-    fire: function(a, b) 
+    fire: function(a, b, c) 
     {
         this.handlers.forEach(function(item) 
         {
-            item.call(this, a, b);
+            item.call(this, a, b, c);
         });
     }
 }
