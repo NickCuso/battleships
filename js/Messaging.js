@@ -79,7 +79,8 @@ on_game_over.sub(function(i_won)
 {
     $("#confirm-i-lost").hide();    
     $("#confirm-win").hide();
-    $("#on-concede").hide();       
+    $("#on-concede").hide();     
+    $("#waiting-for-opponent").hide();
     
     if(i_won)
     {

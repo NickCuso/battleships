@@ -978,7 +978,7 @@ function repaint()
 		{
 			var cell = targeted_cells[i];
 			
-			if(i % 2 != my_player_id)
+			if(cell.player_id != my_player_id)
 			{
 				on_opponent_shot.fire(cell.x, cell.y);
 			}
