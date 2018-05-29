@@ -358,11 +358,13 @@ BattleshipsContract.prototype =
     {
         var data = this.getDataForGameId(game_id);
         assertImInGame(data);
-        data.my_player_id = data.player[0].addr == Blockchain.transaction.from ? 0 : 1;
+
+        var my_player_id = data.player[0].addr == Blockchain.transaction.from ? 0 : 1;
 
         if(data.winner_id != null)
         {
             return {
+                my_player_id,
                 time_till_timeout: this.timeTillTimeout(data),
                 you_won: data.player[data.winner_id].addr == Blockchain.transaction.from,
                 is_winner_confirmed: data.is_winner_confirmed
@@ -385,6 +387,7 @@ BattleshipsContract.prototype =
             var other_player_id = is_my_turn ? otherPlayer(data.current_player_id) : data.current_player_id;
 
             return { 
+                my_player_id,
                 has_opponent_connected,
                 is_my_turn,
                 time_till_timeout: this.timeTillTimeout(data),
