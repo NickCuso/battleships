@@ -52,7 +52,6 @@ var opponent_available;
 var board_seeds;
 var my_player_id;
 
-
 function redirectToGame()
 {
     var href = window.location.href;
