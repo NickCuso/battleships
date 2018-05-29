@@ -815,7 +815,7 @@ function validateSunkShip(player, sunk_ship, x, y)
             throw new Error("The ship you reported as just sunk was hit last... what you doing?  Cheater!");
         }
 
-        if(player.reveal_seeds.length > 4) 
+        if(player.revealed_ships.length > 4) 
         {
             throw new Error("Too many ship reveals...");
         }
