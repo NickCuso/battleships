@@ -10,7 +10,7 @@ if(is_mainnet)
 {
     nebulas_chain_id = 1;
     nebulas_domain = "https://mainnet.nebulas.io";
-    contract_address = "n1syvnhxWEe53Q56ZATUtFWNy3bxHLx1n8b";
+    contract_address = "n1qW8uFs38ZZCBmGReBEYvxB3qatP9GaiRg";
 } 
 else 
 {
@@ -50,6 +50,7 @@ var revealed_ships;
 var is_my_turn;
 var opponent_available;
 var board_seeds;
+var my_player_id;
 
 
 function redirectToGame()

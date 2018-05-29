@@ -221,7 +221,14 @@ BattleshipsContract.prototype =
         validateSunkShip(current_player, sunk_ship, target.x, target.y);
         target.is_hit = is_hit;
 
-        makeMoveAfterAsserts(this, game_id, data, x, y);
+        if(current_player.revealed_ships.length == 5) 
+        { // Auto-concede after all ships have been revealed.
+            gameOverILost(game_id);
+        } 
+        else 
+        {
+            makeMoveAfterAsserts(this, game_id, data, x, y);
+        }
     },
 
     // When a game of Battleships is over, the loser will notice this first.
@@ -351,6 +358,8 @@ BattleshipsContract.prototype =
     {
         var data = this.getDataForGameId(game_id);
         assertImInGame(data);
+        data.my_player_id = data.player[0].addr == Blockchain.transaction.from ? 0 : 1;
+
         if(data.winner_id != null)
         {
             return {
@@ -594,6 +603,11 @@ function addPlayerToGame(contract, game_id, data, player_id, board_hashes)
 
 function addShip(player_board_cells, ship) 
 {
+    if(!ship)
+    {
+        throw new Error("Missing ship reveal");
+    }
+
     var x = ship.start_x;
     var y = ship.start_y;
     
@@ -661,10 +675,10 @@ function recordStatsFor(contract, data, was_timeout, player_id)
     {
         stat_type = 'win';
 
-        var payout_amount = getPayoutAmount(contract);
+        var payout_amount = new BigNumber(getPayoutAmount(contract));
         if(was_timeout)
         { // Winners from a timeout only get 10%
-            payout_amount *= .1;
+            payout_amount = payout_amount.mul(.1);
         }
         transferFromContractToUser(contract, payout_amount);
         // Increase payout by .1% with each game
@@ -682,8 +696,8 @@ function recordStatsFor(contract, data, was_timeout, player_id)
         stat_type = 'lose';
 
         // Losers which don't simply rage quit get 1%
-        var payout_amount = getPayoutAmount(contract);
-        payout_amount *= .01;
+        var payout_amount = new BigNumber(getPayoutAmount(contract));
+        payout_amount = payout_amount.mul(.01);
         transferFromContractToUser(contract, payout_amount);
     }
     recordStatsForPlayer(contract, data.player[player_id].addr, stat_type);
@@ -707,7 +721,6 @@ function recordStatsForPlayer(contract, addr, stat_type)
 function transferFromContractToUser(contract, value)
 {
     var to = Blockchain.transaction.from;
-    value = new BigNumber(value);
     if (value.lt(0)) {
         throw new Error("invalid value.");
     }
@@ -797,6 +810,11 @@ function validateSunkShip(player, sunk_ship, x, y)
         if(ship_includes_cell == false)
         {
             throw new Error("The ship you reported as just sunk was hit last... what you doing?  Cheater!");
+        }
+
+        if(player.reveal_seeds.length > 4) 
+        {
+            throw new Error("Too many ship reveals...");
         }
 
         player.revealed_ships.push(sunk_ship);

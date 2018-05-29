@@ -963,6 +963,11 @@ on_turn_change.sub(function()
 document.getElementById("enemy_board").classList.add('invisible');
 document.getElementById("enemy_board").classList.add('no-pointer');
 
+on_game_over.sub(function() 
+{
+	repaint();
+});
+
 function repaint() 
 {
 	mainGame.resetFogOfWar(true);
@@ -973,7 +978,7 @@ function repaint()
 		{
 			var cell = targeted_cells[i];
 			
-			if(i % 2 != is_my_turn ? targeted_cells.length % 2 : Math.abs(targeted_cells.length % 2 - 1))
+			if(i % 2 != my_player_id)
 			{
 				on_opponent_shot.fire(cell.x, cell.y);
 			}

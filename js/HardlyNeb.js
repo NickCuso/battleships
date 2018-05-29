@@ -36,6 +36,11 @@ function nebRead(method, args, listener)
     });
 }
 
+function nebSend(to, value, listener)
+{
+    nebPay.pay(to, value, {listener});
+}
+
 // The nebulas API, used for signing transactions, etc
 var nebulas = require("nebulas");
 var neb = new nebulas.Neb();

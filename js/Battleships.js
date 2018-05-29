@@ -1,23 +1,5 @@
 "use strict";
 
-// TODO
-// Test shipcoin payouts.
-
-// Front: message on gas limit for end of game
-
-//  visual indicator / effects for:
-// - Hit
-// - Miss
-// - Sink
-// - Win
-// - Lose 
-// - Front: Sound effects (with mute button)
-
-// Give me money button: NAS, ether, BTC.  Link to the contract.  To GitHub, whitepaper  
-
-
-
-
 // Public Write methods
 function startGame(my_player_board_layout, my_board_cells) 
 {
@@ -208,6 +190,13 @@ function pollUntilMyTurn()
             return;
         }
 
+        if(result)
+        {
+            my_player_id = result.my_player_id;
+            revealed_ships = result.revealed_ships;
+            targeted_cells = result.targeted_cells;
+        }
+
         if(result && result.you_won !== undefined) 
         { // Game over
             if(result.you_won)
@@ -237,8 +226,6 @@ function pollUntilMyTurn()
         {
             if(result)
             {
-                revealed_ships = result.revealed_ships;
-                targeted_cells = result.targeted_cells;
                 if(is_my_turn != result.is_my_turn)
                 { // Turn just changed
                     is_my_turn = result.is_my_turn;
@@ -360,4 +347,4 @@ function boardToHashes(board_cells) {
     return board_hashes;
 }
 
-$("#button-join-game").hide();
+$("#play-now-div").hide();
