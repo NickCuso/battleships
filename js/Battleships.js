@@ -69,6 +69,7 @@ function confirmWinner() {
         listener: function(resp) {
             if(resp) {
                 console.log("GG.");
+                pollUntilMyTurn();
             }
         }
     });

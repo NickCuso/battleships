@@ -59,6 +59,13 @@ function redirectToGame()
     window.location =  dir;  
 }
 
+function redirectToHome(path)
+{
+    var href = window.location.href;
+    var dir = href.substring(0, href.lastIndexOf('/')) + path;
+    window.location =  dir;  
+}
+
 function formatCoins(number) 
 {
     var factor = Math.pow(10, 2);

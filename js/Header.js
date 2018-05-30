@@ -38,19 +38,30 @@ function pollForStatus()
             }
         });
 
+        nebRead("myBalance", null, function(balance)
+        {
+            if(!balance)
+            {
+                balance = 0;
+            }
+        
+            $("#my-balance").show();    
+            $("#my-balance-amount").text(formatCoins(balance));
+        });
+        
+        nebReadAnon("balanceOf", [contract_address], function(balance)
+        {
+            if(!balance)
+            {
+                balance = 0;
+            }
+        
+            $("#shipcoins-remaining").text(formatCoins(balance));
+            $("#shipcoins-distributed").text(formatCoins(1000000000000000000000000-balance));
+        });
+
         setTimeout(pollForStatus, auto_refresh_interval * 5);
     });
 }
 pollForStatus();
 
-$("#my-balance").hide();    
-nebRead("myBalance", null, function(balance)
-{
-    if(!balance)
-    {
-        balance = 0;
-    }
-
-    $("#my-balance").show();    
-    $("#my-balance-amount").text(formatCoins(balance));
-});

@@ -95,7 +95,7 @@
                             </div>
                             * This requires a higher gas limit.  Add a 0 to the default (for a limit of 2,000,000).
                         </div>
-                        <div id="confirm-i-lost">
+                        <div id="confirm-i-lost"  class="hidden">
                             You lost.  Post this to the blockchain and stick around for a few mins, if your opponent was cheating they will not be able to confirm the win and you can claim it after a Timeout.
                             <div class="row justify-content-center mt-3">
                                 <button class="btn btn-primary" onclick="gameOverILost()">Confirm I Lost</button>
@@ -104,26 +104,26 @@
                         <div id="on-concede" class="hidden">
                             Stick around for a few mins, if your opponent was cheating they will not be able to confirm the win and you can claim it after a Timeout.
                         </div>
-                        <div id="confirm-win">
+                        <div id="confirm-win"  class="hidden">
                             You won, now just submit proof that you were not cheating to redeem your prize.
                             <div class="row justify-content-center mt-3">
                                 <button class="btn btn-primary" onclick="confirmWinner()">Confirm I Won</button>                        
                             </div>
                             * This requires a higher gas limit.  Add a 0 to the default (for a limit of 2,000,000).                
                         </div>
-                        <div id="game-over-you-won">
+                        <div id="game-over-you-won" class="hidden">
                             GG - You won!  
                             <div class="row justify-content-center mt-3">
                                 <button class="btn btn-secondary" onclick="redirectToGame()">Start a New Game</button>                
                             </div>
                         </div>
-                        <div id="game-over-you-lose">
+                        <div id="game-over-you-lose" class="hidden">
                             You lost.  Better luck next time.
                             <div class="row justify-content-center mt-3">
                                 <button class="btn btn-secondary" onclick="redirectToGame()">Start a New Game</button>                
                             </div>
                         </div>  
-                        <div id="resuming-game">
+                        <div id="resuming-game" class="hidden">
                             <hr>
                             You are resuming a game in progress.  This requires you lay out the board the same way and use the same secret, otherwise you will
                             be disqualified for cheating. 

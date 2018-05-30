@@ -1,4 +1,4 @@
- nebRead("getAllUsersWithStats", null, function(response) 
+ nebReadAnon("getAllUsersWithStats", null, function(response) 
 {
     if(response)
     {
@@ -11,7 +11,7 @@
                 continue;
             }
 
-            nebRead("getStatsForUser", [user], function(stats, ignore, args) 
+            nebReadAnon("getStatsForUser", [user], function(stats, ignore, args) 
             {
                 if(stats)
                 {

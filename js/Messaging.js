@@ -1,4 +1,4 @@
-
+var audio = new Audio('38702__argitoth__archi-sonar-03.wav');
 
 $("#your-turn").hide();
 $("#opponent-turn").hide();
@@ -30,7 +30,8 @@ on_turn_change.sub(function()
     if(is_my_turn)
     {
         $("#your-turn").show();        
-        $("#opponent-turn").hide();        
+        $("#opponent-turn").hide();  
+        audio.play();
     }
     else if(opponent_connected)
     {
