@@ -3,7 +3,7 @@
 // Built for Nebulas by HardlyDifficult.  
 
 ////////////////////////
-// About the NEP20 code:
+// About the NEP5 code:
 
 // Copyright (C) 2017 go-nebulas authors
 //
