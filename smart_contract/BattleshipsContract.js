@@ -221,14 +221,7 @@ BattleshipsContract.prototype =
         validateSunkShip(current_player, sunk_ship, target.x, target.y);
         target.is_hit = is_hit;
 
-        if(sunk_ship && current_player.revealed_ships.length == 4) 
-        { // Auto-concede after all ships have been revealed.
-            gameOverILost(game_id);
-        } 
-        else 
-        {
-            makeMoveAfterAsserts(this, game_id, data, x, y);
-        }
+        makeMoveAfterAsserts(this, game_id, data, x, y);
     },
 
     // When a game of Battleships is over, the loser will notice this first.
