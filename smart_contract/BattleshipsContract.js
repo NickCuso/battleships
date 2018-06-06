@@ -222,6 +222,11 @@ BattleshipsContract.prototype =
         target.is_hit = is_hit;
 
         makeMoveAfterAsserts(this, game_id, data, x, y);
+
+        if(current_player.revealed_ships.length > 4)
+        {
+            throw new Error("Call gameOverILost instead");
+        }
     },
 
     // When a game of Battleships is over, the loser will notice this first.

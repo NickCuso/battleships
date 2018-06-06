@@ -10,7 +10,7 @@ if(is_mainnet)
 {
     nebulas_chain_id = 1;
     nebulas_domain = "https://mainnet.nebulas.io";
-    contract_address = "n1i41EerA1CD7cfqLaRkRnGwxoLfCwZcGMo";
+    contract_address = "n1yqTgTCgK8HNDX1pTUp9fCRh36eiaT1YjH";
 } 
 else 
 {
