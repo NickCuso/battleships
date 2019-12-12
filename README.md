@@ -1,4 +1,4 @@
-Play the Game: https://hardlydifficult.github.io/battleships/ 
+Play the Game: https://nickcuso.github.io/battleships/ 
 
 UI from: https://github.com/billmei/battleboat
 
